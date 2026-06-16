@@ -1,0 +1,5 @@
+Ruta del Curanto;gastronomico;25000
+Paseo Lago Llanquihue;lacustre;30000
+Tour Patrimonial Llanquihue;cultural;18000
+Excursion Volcan Osorno;aventura;45000
+Ruta Cervecera del Sur;gastronomico;28000
