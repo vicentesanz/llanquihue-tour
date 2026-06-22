@@ -1,5 +1,4 @@
-Ruta del Curanto;gastronomico;25000
-Paseo Lago Llanquihue;lacustre;30000
-Tour Patrimonial Llanquihue;cultural;18000
-Excursion Volcan Osorno;aventura;45000
-Ruta Cervecera del Sur;gastronomico;28000
+Ruta del Sabor;Gastronomico;35000;Carlos Vargas;Español;5;TransLlanquihue;Van
+Paseo Lago Llanquihue;Lacustre;45000;María Soto;Español-Inglés;8;Lagos del Sur;Lancha
+Cultura Puerto Varas;Cultural;30000;Pedro Muñoz;Español;4;SurTravel;Minibus
+Excursion Volcan Osorno;Aventura;55000;Ana Rojas;Español-Inglés;7;Andes Tour;Bus

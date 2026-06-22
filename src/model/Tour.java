@@ -9,10 +9,18 @@ public class Tour {
     private String tipo;
     private int precio;
 
-    public Tour(String nombre, String tipo, int precio) {
+    private GuiaTuristico guia;
+    private ProveedorTransporte transporte;
+
+    public Tour(String nombre, String tipo, int precio,
+                GuiaTuristico guia,
+                ProveedorTransporte transporte) {
+
         this.nombre = nombre;
         this.tipo = tipo;
         this.precio = precio;
+        this.guia = guia;
+        this.transporte = transporte;
     }
 
     public String getNombre() {
@@ -36,15 +44,27 @@ public class Tour {
     }
 
     public void setPrecio(int precio) {
-        this.precio = precio;
+        if (precio > 0) {
+            this.precio = precio;
+        } else {
+            System.out.println("El precio debe ser mayor que cero.");
+        }
+    }
+
+    public GuiaTuristico getGuia() {
+        return guia;
+    }
+
+    public ProveedorTransporte getTransporte() {
+        return transporte;
     }
 
     @Override
     public String toString() {
-        return "Tour{" +
-                "nombre='" + nombre + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", precio=" + precio +
-                '}';
+        return "Tour: " + nombre +
+                " | Tipo: " + tipo +
+                " | Precio: $" + precio +
+                " | Guia: " + guia +
+                " | Transporte: " + transporte;
     }
 }

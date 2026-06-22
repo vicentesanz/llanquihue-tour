@@ -1,5 +1,7 @@
 package data;
 
+import model.GuiaTuristico;
+import model.ProveedorTransporte;
 import model.Tour;
 
 import java.io.BufferedReader;
@@ -12,6 +14,12 @@ import java.util.ArrayList;
  */
 public class GestorDatos {
 
+    /**
+     * Carga los tours desde un archivo de texto y los almacena en una colección.
+     *
+     * @param rutaArchivo ruta del archivo a leer
+     * @return lista de tours cargados desde el archivo
+     */
     public ArrayList<Tour> cargarTours(String rutaArchivo) {
 
         ArrayList<Tour> tours = new ArrayList<>();
@@ -22,15 +30,23 @@ public class GestorDatos {
 
             while ((linea = br.readLine()) != null) {
 
-                String[] datos = linea.split(";");
+                try {
+                    String[] datos = linea.split(";");
 
-                String nombre = datos[0];
-                String tipo = datos[1];
-                int precio = Integer.parseInt(datos[2]);
+                    String nombre = datos[0];
+                    String tipo = datos[1];
+                    int precio = Integer.parseInt(datos[2]);
 
-                Tour tour = new Tour(nombre, tipo, precio);
+                    GuiaTuristico guia = new GuiaTuristico(datos[3], datos[4], Integer.parseInt(datos[5]));
+                    ProveedorTransporte transporte = new ProveedorTransporte(datos[6], datos[7]);
 
-                tours.add(tour);
+                    Tour tour = new Tour(nombre, tipo, precio, guia, transporte);
+
+                    tours.add(tour);
+
+                } catch (Exception e) {
+                    System.out.println("Error en línea: " + linea);
+                }
             }
 
         } catch (IOException e) {
