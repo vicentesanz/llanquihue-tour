@@ -6,9 +6,9 @@ LlanquihueTourApp es una aplicación desarrollada en Java para la asignatura Des
 
 El sistema permite cargar información de tours turísticos desde un archivo de texto externo, almacenar los datos en una colección dinámica (`ArrayList`) y mostrar la información por consola. Además, incorpora búsquedas y filtros simples para facilitar la gestión de los registros.
 
-En esta sexta semana se amplió el proyecto mediante la implementación de una jerarquía de clases utilizando herencia simple para representar distintos servicios turísticos, aplicando reutilización de código mediante una superclase y especialización mediante subclases.
+En esta séptima semana el proyecto fue ampliado incorporando polimorfismo y colecciones genéricas. Los distintos servicios turísticos se almacenan en una colección de tipo `List<ServicioTuristico>`, permitiendo recorrerlos dinámicamente mediante referencias a la superclase e invocar métodos sobrescritos en cada subclase.
 
-La aplicación utiliza principios de Programación Orientada a Objetos, incluyendo encapsulamiento, composición, herencia, organización modular mediante paquetes, sobrescritura de métodos y manejo de excepciones.
+La aplicación utiliza principios de Programación Orientada a Objetos, incluyendo encapsulamiento, composición, herencia, polimorfismo, organización modular mediante paquetes, sobrescritura de métodos y manejo de excepciones.
 
 ---
 
@@ -28,7 +28,7 @@ Contiene las clases que representan las entidades del sistema:
 
 ## data
 
-Contiene las clases encargadas de la lectura y creación de datos:
+Contiene las clases encargadas de la lectura y gestión de datos:
 
 * GestorDatos
 * GestorServicios
@@ -45,19 +45,19 @@ Contiene la interfaz de ejecución de la aplicación:
 
 ## ServicioTuristico
 
-Clase base que representa un servicio turístico mediante atributos comunes como nombre y duración.
+Clase base que representa un servicio turístico mediante atributos comunes como nombre y duración. Además, incorpora el método `mostrarInformacion()` que es sobrescrito por las subclases.
 
 ## RutaGastronomica
 
-Subclase de ServicioTuristico que incorpora el número de paradas.
+Subclase de ServicioTuristico que incorpora el número de paradas y sobrescribe el método `mostrarInformacion()`.
 
 ## PaseoLacustre
 
-Subclase de ServicioTuristico que incorpora el tipo de embarcación.
+Subclase de ServicioTuristico que incorpora el tipo de embarcación y sobrescribe el método `mostrarInformacion()`.
 
 ## ExcursionCultural
 
-Subclase de ServicioTuristico que incorpora el lugar histórico.
+Subclase de ServicioTuristico que incorpora el lugar histórico y sobrescribe el método `mostrarInformacion()`.
 
 ## Tour
 
@@ -77,11 +77,11 @@ Lee la información desde el archivo `tours.txt`, crea los objetos correspondien
 
 ## GestorServicios
 
-Crea instancias de prueba de los distintos servicios turísticos y muestra su información utilizando el método `toString()`.
+Gestiona una colección polimórfica de servicios turísticos utilizando `List<ServicioTuristico>`, crea instancias de las distintas subclases y muestra su información mediante el método `mostrarInformacion()`.
 
 ## Main
 
-Clase principal encargada de ejecutar el sistema, mostrar los tours cargados desde el archivo y presentar la jerarquía de servicios turísticos implementada.
+Clase principal encargada de ejecutar el sistema, mostrar los tours cargados desde el archivo y recorrer la colección polimórfica de servicios turísticos.
 
 ---
 
@@ -97,13 +97,15 @@ Clase principal encargada de ejecutar el sistema, mostrar los tours cargados des
 * Implementación de herencia simple.
 * Uso de la palabra reservada `super()` en los constructores.
 * Sobrescritura del método `toString()`.
-* Creación y visualización de servicios turísticos de prueba.
+* Creación de servicios turísticos de prueba.
+* Uso de colecciones genéricas mediante `List<ServicioTuristico>`.
+* Aplicación de polimorfismo utilizando el método `mostrarInformacion()`.
 
 ---
 
 # Estructura del Proyecto
 
-```
+```text
 LlanquihueTourApp
 │
 ├── src
@@ -139,7 +141,7 @@ LlanquihueTourApp
 4. El programa cargará la información desde el archivo de texto.
 5. Se mostrará la lista completa de tours registrados.
 6. Posteriormente se visualizarán los tours gastronómicos.
-7. Finalmente se mostrarán los servicios turísticos creados mediante la jerarquía de clases implementada en la Semana 6.
+7. Finalmente se recorrerá una colección polimórfica de servicios turísticos mostrando la información específica de cada tipo mediante el método `mostrarInformacion()`.
 
 ---
 
