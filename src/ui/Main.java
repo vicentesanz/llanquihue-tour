@@ -32,7 +32,7 @@ public class Main {
             }
         }
 
-        // Funcionalidad de la Semana 6
+        // Funcionalidad de la Semana 7: polimorfismo y colecciones genéricas
         System.out.println("\n==============================");
         System.out.println("SERVICIOS TURÍSTICOS");
         System.out.println("==============================");
