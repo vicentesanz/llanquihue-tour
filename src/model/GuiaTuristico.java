@@ -40,10 +40,10 @@ public class GuiaTuristico implements Registrable {
     }
 
     @Override
-    public void mostrarResumen() {
-        System.out.println("Guía: " + nombre +
+    public String mostrarResumen() {
+        return "Guía: " + nombre +
                 " | Idioma: " + idioma +
-                " | Experiencia: " + experiencia + " años");
+                " | Experiencia: " + experiencia + " años";
     }
 
     @Override

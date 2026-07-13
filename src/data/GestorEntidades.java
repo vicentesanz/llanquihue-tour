@@ -15,7 +15,6 @@ public class GestorEntidades {
         entidades.add(new GuiaTuristico("Carlos Vargas", "Español", 5));
         entidades.add(new ProveedorTransporte("TransLlanquihue", "Van"));
         entidades.add(new RutaGastronomica("Ruta de Sabores", 4, 5));
-
     }
 
     public void mostrarEntidades() {
@@ -24,7 +23,7 @@ public class GestorEntidades {
 
         for (Registrable entidad : entidades) {
 
-            entidad.mostrarResumen();
+            System.out.println(entidad.mostrarResumen());
 
             if (entidad instanceof GuiaTuristico) {
                 System.out.println("-> Es un guía turístico");

@@ -30,9 +30,9 @@ public class ProveedorTransporte implements Registrable {
     }
 
     @Override
-    public void mostrarResumen() {
-        System.out.println("Proveedor: " + empresa +
-                " | Vehículo: " + tipoVehiculo);
+    public String mostrarResumen() {
+        return "Proveedor: " + empresa +
+                " | Vehículo: " + tipoVehiculo;
     }
 
     @Override

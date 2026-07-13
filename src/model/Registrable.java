@@ -1,10 +1,9 @@
 package model;
 
 /**
- * Interfaz para entidades registrables.
+ * Define el comportamiento común de las entidades registrables.
  */
 public interface Registrable {
 
-    void mostrarResumen();
-
+    String mostrarResumen();
 }

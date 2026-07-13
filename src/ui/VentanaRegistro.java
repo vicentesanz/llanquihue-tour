@@ -132,7 +132,7 @@ public class VentanaRegistro {
         );
 
         for (Registrable entidad : entidades) {
-            resumen.append(entidad)
+            resumen.append(entidad.mostrarResumen())
                     .append("\n");
         }
 

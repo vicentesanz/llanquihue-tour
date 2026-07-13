@@ -29,8 +29,8 @@ public class ServicioTuristico implements Registrable {
     }
 
     @Override
-    public void mostrarResumen() {
-        System.out.println("Servicio: " + getNombre());
+    public String mostrarResumen() {
+        return "Servicio: " + getNombre();
     }
 
     @Override
