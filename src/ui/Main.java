@@ -44,5 +44,9 @@ public class Main {
         // Funcionalidad de la Semana 8
         GestorEntidades gestorEntidades = new GestorEntidades();
         gestorEntidades.mostrarEntidades();
+
+        // Interfaz gráfica
+        VentanaRegistro ventanaRegistro = new VentanaRegistro();
+        ventanaRegistro.iniciar();
     }
 }
