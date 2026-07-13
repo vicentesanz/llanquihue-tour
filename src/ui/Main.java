@@ -1,6 +1,7 @@
 package ui;
 
 import data.GestorDatos;
+import data.GestorEntidades;
 import data.GestorServicios;
 import model.Tour;
 
@@ -32,12 +33,16 @@ public class Main {
             }
         }
 
-        // Funcionalidad de la Semana 7: polimorfismo y colecciones genéricas
+        // Funcionalidad de la Semana 7
         System.out.println("\n==============================");
         System.out.println("SERVICIOS TURÍSTICOS");
         System.out.println("==============================");
 
         GestorServicios gestorServicios = new GestorServicios();
         gestorServicios.mostrarServicios();
+
+        // Funcionalidad de la Semana 8
+        GestorEntidades gestorEntidades = new GestorEntidades();
+        gestorEntidades.mostrarEntidades();
     }
 }
