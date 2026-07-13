@@ -3,7 +3,7 @@ package model;
 /**
  * Representa una empresa de transporte asociada a un tour.
  */
-public class ProveedorTransporte {
+public class ProveedorTransporte implements Registrable {
 
     private String empresa;
     private String tipoVehiculo;
@@ -27,6 +27,12 @@ public class ProveedorTransporte {
 
     public void setTipoVehiculo(String tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
+    }
+
+    @Override
+    public void mostrarResumen() {
+        System.out.println("Proveedor: " + empresa +
+                " | Vehículo: " + tipoVehiculo);
     }
 
     @Override

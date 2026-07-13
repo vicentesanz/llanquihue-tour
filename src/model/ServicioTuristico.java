@@ -3,7 +3,7 @@ package model;
 /**
  * Clase base que representa un servicio turístico.
  */
-public class ServicioTuristico {
+public class ServicioTuristico implements Registrable {
 
     private String nombre;
     private int duracionHoras;
@@ -26,6 +26,11 @@ public class ServicioTuristico {
      */
     public void mostrarInformacion() {
         System.out.println(toString());
+    }
+
+    @Override
+    public void mostrarResumen() {
+        System.out.println("Servicio: " + getNombre());
     }
 
     @Override

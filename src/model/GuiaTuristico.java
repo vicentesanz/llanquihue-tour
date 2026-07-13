@@ -3,7 +3,8 @@ package model;
 /**
  * Representa un guía turístico de la agencia Llanquihue Tour.
  */
-public class GuiaTuristico {
+public class GuiaTuristico implements Registrable {
+
     private String nombre;
     private String idioma;
     private int experiencia;
@@ -36,6 +37,13 @@ public class GuiaTuristico {
 
     public void setExperiencia(int experiencia) {
         this.experiencia = experiencia;
+    }
+
+    @Override
+    public void mostrarResumen() {
+        System.out.println("Guía: " + nombre +
+                " | Idioma: " + idioma +
+                " | Experiencia: " + experiencia + " años");
     }
 
     @Override
