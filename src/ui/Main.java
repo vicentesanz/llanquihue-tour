@@ -6,47 +6,88 @@ import data.GestorServicios;
 import model.Tour;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Clase principal del programa.
+ * Clase principal del sistema Llanquihue Tour.
  */
 public class Main {
 
+    /**
+     * Punto de inicio de la aplicación.
+     *
+     * @param args argumentos de ejecución
+     */
     public static void main(String[] args) {
 
-        // Funcionalidad de la semana anterior
-        GestorDatos gestor = new GestorDatos();
+        GestorDatos gestorDatos = new GestorDatos();
 
-        ArrayList<Tour> tours = gestor.cargarTours("resources/tours.txt");
+        ArrayList<Tour> tours = gestorDatos.cargarTours(
+                "resources/tours.txt"
+        );
 
-        System.out.println("=== LISTA DE TOURS ===");
+        mostrarTours(
+                "LISTA DE TOURS",
+                tours
+        );
+
+        ArrayList<Tour> toursGastronomicos =
+                gestorDatos.buscarPorTipo(
+                        tours,
+                        "Gastronomico"
+                );
+
+        mostrarTours(
+                "TOURS GASTRONÓMICOS",
+                toursGastronomicos
+        );
+
+        System.out.println(
+                "\n=============================="
+        );
+        System.out.println("SERVICIOS TURÍSTICOS");
+        System.out.println(
+                "=============================="
+        );
+
+        GestorServicios gestorServicios =
+                new GestorServicios();
+
+        gestorServicios.mostrarServicios();
+
+        GestorEntidades gestorEntidades =
+                new GestorEntidades();
+
+        gestorEntidades.mostrarEntidades();
+
+        VentanaRegistro ventanaRegistro =
+                new VentanaRegistro();
+
+        ventanaRegistro.iniciar();
+    }
+
+    /**
+     * Muestra una colección de tours con un título.
+     *
+     * @param titulo título de la sección
+     * @param tours tours que se desean mostrar
+     */
+    private static void mostrarTours(
+            String titulo,
+            List<Tour> tours
+    ) {
+
+        System.out.println("\n=== " + titulo + " ===");
+
+        if (tours.isEmpty()) {
+            System.out.println(
+                    "No existen tours para mostrar."
+            );
+            return;
+        }
 
         for (Tour tour : tours) {
             System.out.println(tour);
         }
-
-        System.out.println("\n=== TOURS GASTRONÓMICOS ===");
-
-        for (Tour tour : tours) {
-            if (tour.getTipo().equalsIgnoreCase("gastronomico")) {
-                System.out.println(tour);
-            }
-        }
-
-        // Funcionalidad de la Semana 7
-        System.out.println("\n==============================");
-        System.out.println("SERVICIOS TURÍSTICOS");
-        System.out.println("==============================");
-
-        GestorServicios gestorServicios = new GestorServicios();
-        gestorServicios.mostrarServicios();
-
-        // Funcionalidad de la Semana 8
-        GestorEntidades gestorEntidades = new GestorEntidades();
-        gestorEntidades.mostrarEntidades();
-
-        // Interfaz gráfica
-        VentanaRegistro ventanaRegistro = new VentanaRegistro();
-        ventanaRegistro.iniciar();
     }
 }
