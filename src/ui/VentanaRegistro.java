@@ -1,20 +1,32 @@
 package ui;
 
+import data.GestorEntidades;
+import model.Cliente;
+import model.Direccion;
 import model.GuiaTuristico;
 import model.ProveedorTransporte;
 import model.Registrable;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Interfaz gráfica para registrar, mostrar y filtrar entidades.
+ */
 public class VentanaRegistro {
 
-    private final ArrayList<Registrable> entidades;
+    private final GestorEntidades gestorEntidades;
 
+    /**
+     * Construye la ventana con un gestor inicialmente vacío.
+     */
     public VentanaRegistro() {
-        entidades = new ArrayList<>();
+        gestorEntidades = new GestorEntidades(false);
     }
 
+    /**
+     * Inicia el menú principal de la aplicación.
+     */
     public void iniciar() {
 
         int opcion;
@@ -24,7 +36,9 @@ public class VentanaRegistro {
                     === LLANQUIHUE TOUR ===
                     1. Registrar guía turístico
                     2. Registrar proveedor de transporte
-                    3. Mostrar entidades registradas
+                    3. Registrar cliente
+                    4. Mostrar entidades registradas
+                    5. Filtrar entidades por tipo
                     0. Salir
                     """;
 
@@ -39,7 +53,9 @@ public class VentanaRegistro {
                     switch (opcion) {
                         case 1 -> registrarGuia();
                         case 2 -> registrarProveedor();
-                        case 3 -> mostrarEntidades();
+                        case 3 -> registrarCliente();
+                        case 4 -> mostrarEntidades();
+                        case 5 -> filtrarEntidades();
                         case 0 -> JOptionPane.showMessageDialog(
                                 null,
                                 "Programa finalizado."
@@ -53,7 +69,7 @@ public class VentanaRegistro {
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(
                             null,
-                            "Debes ingresar un número válido."
+                            "Debes ingresar una opción numérica."
                     );
                     opcion = -1;
                 }
@@ -62,54 +78,89 @@ public class VentanaRegistro {
         } while (opcion != 0);
     }
 
+    /**
+     * Registra un guía turístico con RUT y dirección.
+     */
     private void registrarGuia() {
 
-        String nombre = JOptionPane.showInputDialog("Nombre del guía:");
-        String idioma = JOptionPane.showInputDialog("Idioma del guía:");
-        String experienciaTexto = JOptionPane.showInputDialog(
-                "Años de experiencia:"
+        String rut = solicitarTexto("RUT del guía:");
+        if (rut == null) {
+            return;
+        }
+
+        String nombre = solicitarTexto("Nombre del guía:");
+        if (nombre == null) {
+            return;
+        }
+
+        Direccion direccion = solicitarDireccion();
+        if (direccion == null) {
+            return;
+        }
+
+        String idioma = solicitarTexto("Idioma del guía:");
+        if (idioma == null) {
+            return;
+        }
+
+        Integer experiencia = solicitarEntero(
+                "Años de experiencia:",
+                0
         );
 
-        try {
-            int experiencia = Integer.parseInt(experienciaTexto);
+        if (experiencia == null) {
+            return;
+        }
 
+        try {
             GuiaTuristico guia = new GuiaTuristico(
+                    rut,
                     nombre,
+                    direccion,
                     idioma,
                     experiencia
             );
 
-            entidades.add(guia);
+            gestorEntidades.agregarEntidad(guia);
 
             JOptionPane.showMessageDialog(
                     null,
                     "Guía turístico registrado correctamente."
             );
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "La experiencia debe ser un número válido."
-            );
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
         }
     }
 
+    /**
+     * Registra un proveedor de transporte.
+     */
     private void registrarProveedor() {
 
-        String empresa = JOptionPane.showInputDialog(
+        String empresa = solicitarTexto(
                 "Nombre de la empresa:"
         );
 
-        String tipoVehiculo = JOptionPane.showInputDialog(
+        if (empresa == null) {
+            return;
+        }
+
+        String tipoVehiculo = solicitarTexto(
                 "Tipo de vehículo:"
         );
 
-        ProveedorTransporte proveedor = new ProveedorTransporte(
-                empresa,
-                tipoVehiculo
-        );
+        if (tipoVehiculo == null) {
+            return;
+        }
 
-        entidades.add(proveedor);
+        ProveedorTransporte proveedor =
+                new ProveedorTransporte(
+                        empresa,
+                        tipoVehiculo
+                );
+
+        gestorEntidades.agregarEntidad(proveedor);
 
         JOptionPane.showMessageDialog(
                 null,
@@ -117,28 +168,259 @@ public class VentanaRegistro {
         );
     }
 
+    /**
+     * Registra un cliente con sus datos personales.
+     */
+    private void registrarCliente() {
+
+        String rut = solicitarTexto("RUT del cliente:");
+        if (rut == null) {
+            return;
+        }
+
+        String nombre = solicitarTexto("Nombre del cliente:");
+        if (nombre == null) {
+            return;
+        }
+
+        Direccion direccion = solicitarDireccion();
+        if (direccion == null) {
+            return;
+        }
+
+        String telefono = solicitarTexto(
+                "Teléfono del cliente:"
+        );
+
+        if (telefono == null) {
+            return;
+        }
+
+        String correo = solicitarTexto(
+                "Correo electrónico del cliente:"
+        );
+
+        if (correo == null) {
+            return;
+        }
+
+        try {
+            Cliente cliente = new Cliente(
+                    rut,
+                    nombre,
+                    direccion,
+                    telefono,
+                    correo
+            );
+
+            gestorEntidades.agregarEntidad(cliente);
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Cliente registrado correctamente."
+            );
+
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        }
+    }
+
+    /**
+     * Solicita los datos necesarios para construir una dirección.
+     *
+     * @return dirección ingresada o null si se cancela
+     */
+    private Direccion solicitarDireccion() {
+
+        String calle = solicitarTexto("Calle:");
+        if (calle == null) {
+            return null;
+        }
+
+        Integer numero = solicitarEntero(
+                "Número de la dirección:",
+                1
+        );
+
+        if (numero == null) {
+            return null;
+        }
+
+        String comuna = solicitarTexto("Comuna:");
+        if (comuna == null) {
+            return null;
+        }
+
+        return new Direccion(calle, numero, comuna);
+    }
+
+    /**
+     * Solicita un texto obligatorio y controla campos vacíos.
+     *
+     * @param mensaje mensaje mostrado al usuario
+     * @return texto válido o null si se cancela
+     */
+    private String solicitarTexto(String mensaje) {
+
+        while (true) {
+            String entrada = JOptionPane.showInputDialog(
+                    mensaje
+            );
+
+            if (entrada == null) {
+                return null;
+            }
+
+            if (!entrada.isBlank()) {
+                return entrada.trim();
+            }
+
+            mostrarError("El campo no puede estar vacío.");
+        }
+    }
+
+    /**
+     * Solicita un número entero igual o superior al mínimo.
+     *
+     * @param mensaje mensaje mostrado al usuario
+     * @param minimo valor mínimo permitido
+     * @return número válido o null si se cancela
+     */
+    private Integer solicitarEntero(
+            String mensaje,
+            int minimo
+    ) {
+
+        while (true) {
+            String entrada = JOptionPane.showInputDialog(
+                    mensaje
+            );
+
+            if (entrada == null) {
+                return null;
+            }
+
+            try {
+                int numero = Integer.parseInt(entrada);
+
+                if (numero >= minimo) {
+                    return numero;
+                }
+
+                mostrarError(
+                        "El número debe ser igual o mayor que "
+                                + minimo + "."
+                );
+
+            } catch (NumberFormatException e) {
+                mostrarError(
+                        "Debes ingresar un número entero válido."
+                );
+            }
+        }
+    }
+
+    /**
+     * Muestra todas las entidades registradas.
+     */
     private void mostrarEntidades() {
+        mostrarEntidades(
+                gestorEntidades.obtenerEntidades(),
+                "ENTIDADES REGISTRADAS"
+        );
+    }
+
+    /**
+     * Muestra una lista de entidades. Este método demuestra sobrecarga.
+     *
+     * @param entidades entidades que se mostrarán
+     * @param titulo título de la ventana
+     */
+    private void mostrarEntidades(
+            List<Registrable> entidades,
+            String titulo
+    ) {
 
         if (entidades.isEmpty()) {
             JOptionPane.showMessageDialog(
                     null,
-                    "No existen entidades registradas."
+                    "No existen entidades para mostrar."
             );
             return;
         }
 
         StringBuilder resumen = new StringBuilder(
-                "=== ENTIDADES REGISTRADAS ===\n\n"
+                "=== " + titulo + " ===\n\n"
         );
 
         for (Registrable entidad : entidades) {
             resumen.append(entidad.mostrarResumen())
-                    .append("\n");
+                    .append("\n\n");
         }
 
         JOptionPane.showMessageDialog(
                 null,
                 resumen.toString()
+        );
+    }
+
+    /**
+     * Filtra las entidades según el tipo seleccionado.
+     */
+    private void filtrarEntidades() {
+
+        String[] opciones = {
+                "Guías turísticos",
+                "Clientes",
+                "Proveedores de transporte"
+        };
+
+        String seleccion = (String)
+                JOptionPane.showInputDialog(
+                        null,
+                        "Selecciona el tipo de entidad:",
+                        "Filtrar entidades",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]
+                );
+
+        if (seleccion == null) {
+            return;
+        }
+
+        Class<?> tipo;
+
+        switch (seleccion) {
+            case "Guías turísticos" ->
+                    tipo = GuiaTuristico.class;
+            case "Clientes" ->
+                    tipo = Cliente.class;
+            default ->
+                    tipo = ProveedorTransporte.class;
+        }
+
+        List<Registrable> resultados =
+                gestorEntidades.buscarPorTipo(tipo);
+
+        mostrarEntidades(
+                resultados,
+                seleccion.toUpperCase()
+        );
+    }
+
+    /**
+     * Muestra un mensaje de error.
+     *
+     * @param mensaje descripción del error
+     */
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(
+                null,
+                mensaje,
+                "Error",
+                JOptionPane.ERROR_MESSAGE
         );
     }
 }
