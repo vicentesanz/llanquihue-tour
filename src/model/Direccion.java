@@ -17,33 +17,81 @@ public class Direccion {
      * @param comuna comuna correspondiente
      */
     public Direccion(String calle, int numero, String comuna) {
-        this.calle = calle;
-        this.numero = numero;
-        this.comuna = comuna;
+        setCalle(calle);
+        setNumero(numero);
+        setComuna(comuna);
     }
 
+    /**
+     * Obtiene el nombre de la calle.
+     *
+     * @return calle registrada
+     */
     public String getCalle() {
         return calle;
     }
 
+    /**
+     * Modifica la calle evitando valores vacíos.
+     *
+     * @param calle nueva calle
+     */
     public void setCalle(String calle) {
-        this.calle = calle;
+        if (calle == null || calle.isBlank()) {
+            throw new IllegalArgumentException(
+                    "La calle no puede estar vacía."
+            );
+        }
+
+        this.calle = calle.trim();
     }
 
+    /**
+     * Obtiene el número de la dirección.
+     *
+     * @return número registrado
+     */
     public int getNumero() {
         return numero;
     }
 
+    /**
+     * Modifica el número de la dirección.
+     *
+     * @param numero nuevo número
+     */
     public void setNumero(int numero) {
+        if (numero <= 0) {
+            throw new IllegalArgumentException(
+                    "El número de la dirección debe ser mayor que cero."
+            );
+        }
+
         this.numero = numero;
     }
 
+    /**
+     * Obtiene la comuna.
+     *
+     * @return comuna registrada
+     */
     public String getComuna() {
         return comuna;
     }
 
+    /**
+     * Modifica la comuna evitando valores vacíos.
+     *
+     * @param comuna nueva comuna
+     */
     public void setComuna(String comuna) {
-        this.comuna = comuna;
+        if (comuna == null || comuna.isBlank()) {
+            throw new IllegalArgumentException(
+                    "La comuna no puede estar vacía."
+            );
+        }
+
+        this.comuna = comuna.trim();
     }
 
     /**
