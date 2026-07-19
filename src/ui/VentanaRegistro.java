@@ -6,6 +6,7 @@ import model.Direccion;
 import model.GuiaTuristico;
 import model.ProveedorTransporte;
 import model.Registrable;
+import utils.ValidadorRut;
 
 import javax.swing.*;
 import java.util.List;
@@ -83,7 +84,7 @@ public class VentanaRegistro {
      */
     private void registrarGuia() {
 
-        String rut = solicitarTexto("RUT del guía:");
+        String rut = solicitarRut("RUT del guía:");
         if (rut == null) {
             return;
         }
@@ -154,18 +155,23 @@ public class VentanaRegistro {
             return;
         }
 
-        ProveedorTransporte proveedor =
-                new ProveedorTransporte(
-                        empresa,
-                        tipoVehiculo
-                );
+        try {
+            ProveedorTransporte proveedor =
+                    new ProveedorTransporte(
+                            empresa,
+                            tipoVehiculo
+                    );
 
-        gestorEntidades.agregarEntidad(proveedor);
+            gestorEntidades.agregarEntidad(proveedor);
 
-        JOptionPane.showMessageDialog(
-                null,
-                "Proveedor registrado correctamente."
-        );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Proveedor registrado correctamente."
+            );
+
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        }
     }
 
     /**
@@ -173,7 +179,7 @@ public class VentanaRegistro {
      */
     private void registrarCliente() {
 
-        String rut = solicitarTexto("RUT del cliente:");
+        String rut = solicitarRut("RUT del cliente:");
         if (rut == null) {
             return;
         }
@@ -196,9 +202,7 @@ public class VentanaRegistro {
             return;
         }
 
-        String correo = solicitarTexto(
-                "Correo electrónico del cliente:"
-        );
+        String correo = solicitarCorreo();
 
         if (correo == null) {
             return;
@@ -255,6 +259,33 @@ public class VentanaRegistro {
     }
 
     /**
+     * Solicita un RUT hasta que sea válido.
+     *
+     * @param mensaje mensaje mostrado al usuario
+     * @return RUT validado o null si se cancela
+     */
+    private String solicitarRut(String mensaje) {
+
+        while (true) {
+            String rut = solicitarTexto(mensaje);
+
+            if (rut == null) {
+                return null;
+            }
+
+            try {
+                return ValidadorRut.validar(rut);
+
+            } catch (IllegalArgumentException e) {
+                mostrarError(
+                        e.getMessage()
+                                + " Inténtalo nuevamente."
+                );
+            }
+        }
+    }
+
+    /**
      * Solicita un texto obligatorio y controla campos vacíos.
      *
      * @param mensaje mensaje mostrado al usuario
@@ -276,6 +307,41 @@ public class VentanaRegistro {
             }
 
             mostrarError("El campo no puede estar vacío.");
+        }
+    }
+
+    /**
+     * Solicita un correo hasta que su formato sea válido.
+     *
+     * @return correo válido o null si se cancela
+     */
+    private String solicitarCorreo() {
+
+        while (true) {
+            String correo = solicitarTexto(
+                    "Correo electrónico del cliente:"
+            );
+
+            if (correo == null) {
+                return null;
+            }
+
+            int posicionArroba = correo.indexOf('@');
+            int posicionPunto = correo.lastIndexOf('.');
+
+            boolean formatoValido =
+                    posicionArroba > 0
+                            && posicionPunto > posicionArroba + 1
+                            && posicionPunto < correo.length() - 1;
+
+            if (formatoValido) {
+                return correo;
+            }
+
+            mostrarError(
+                    "El correo electrónico no es válido. "
+                            + "Inténtalo nuevamente."
+            );
         }
     }
 
