@@ -3,51 +3,118 @@ package model;
 /**
  * Representa un guía turístico de la agencia Llanquihue Tour.
  */
-public class GuiaTuristico implements Registrable {
+public class GuiaTuristico extends Persona {
 
-    private String nombre;
     private String idioma;
     private int experiencia;
 
-    public GuiaTuristico(String nombre, String idioma, int experiencia) {
-        this.nombre = nombre;
-        this.idioma = idioma;
-        this.experiencia = experiencia;
+    /**
+     * Constructor utilizado para los datos antiguos del archivo tours.txt.
+     *
+     * @param nombre nombre del guía
+     * @param idioma idioma que domina
+     * @param experiencia años de experiencia
+     */
+    public GuiaTuristico(
+            String nombre,
+            String idioma,
+            int experiencia
+    ) {
+        super(nombre);
+        setIdioma(idioma);
+        setExperiencia(experiencia);
     }
 
-    public String getNombre() {
-        return nombre;
+    /**
+     * Construye un guía turístico con todos sus datos.
+     *
+     * @param rut RUT del guía
+     * @param nombre nombre completo
+     * @param direccion dirección del guía
+     * @param idioma idioma que domina
+     * @param experiencia años de experiencia
+     */
+    public GuiaTuristico(
+            String rut,
+            String nombre,
+            Direccion direccion,
+            String idioma,
+            int experiencia
+    ) {
+        super(rut, nombre, direccion);
+        setIdioma(idioma);
+        setExperiencia(experiencia);
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
+    /**
+     * Obtiene el idioma del guía.
+     *
+     * @return idioma registrado
+     */
     public String getIdioma() {
         return idioma;
     }
 
+    /**
+     * Modifica el idioma, evitando valores vacíos.
+     *
+     * @param idioma nuevo idioma
+     */
     public void setIdioma(String idioma) {
-        this.idioma = idioma;
+        if (idioma == null || idioma.isBlank()) {
+            throw new IllegalArgumentException(
+                    "El idioma no puede estar vacío."
+            );
+        }
+
+        this.idioma = idioma.trim();
     }
 
+    /**
+     * Obtiene los años de experiencia.
+     *
+     * @return años de experiencia
+     */
     public int getExperiencia() {
         return experiencia;
     }
 
+    /**
+     * Modifica los años de experiencia.
+     *
+     * @param experiencia nuevos años de experiencia
+     */
     public void setExperiencia(int experiencia) {
+        if (experiencia < 0) {
+            throw new IllegalArgumentException(
+                    "La experiencia no puede ser negativa."
+            );
+        }
+
         this.experiencia = experiencia;
     }
 
+    /**
+     * Muestra un resumen del guía turístico.
+     *
+     * @return resumen de sus datos
+     */
     @Override
     public String mostrarResumen() {
-        return "Guía: " + nombre +
-                " | Idioma: " + idioma +
-                " | Experiencia: " + experiencia + " años";
+        return "Guía turístico | " + super.toString()
+                + " | Idioma: " + idioma
+                + " | Experiencia: " + experiencia + " años";
     }
 
+    /**
+     * Entrega todos los datos del guía.
+     *
+     * @return datos formateados
+     */
     @Override
     public String toString() {
-        return nombre + " | Idioma: " + idioma + " | Experiencia: " + experiencia + " años";
+        return super.toString()
+                + " | Idioma: " + idioma
+                + " | Experiencia: " + experiencia + " años";
     }
 }
